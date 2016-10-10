@@ -3,56 +3,64 @@
 const fs = require('fs');
 const database = './db/messages.db';
 
-exports.messages;
+const dm = {};
 
-exports.initDBMessages = function() {
+dm.initDBMessages = function() {
   var data = fs.readFileSync(database, "utf-8");
   var arrMessages = data.split('\n');
-  exports.messages = [];
+  dm.messages = [];
   for (var i=0; i<arrMessages.length; i++) {
-    if (arrMessages[i] !== '') exports.messages.push(JSON.parse(arrMessages[i]));
+    if (arrMessages[i] !== '') dm.messages.push(JSON.parse(arrMessages[i]));
   }
-  // exports.messages.sort(function(a,b){
+  // Makes weird things, maybe needs to be sorted, same on saveDB
+  // dm.messages.sort(function(a,b){
   //   return a.timestamp - b.timestamp;
   // });
 }
 
-exports.writeMessage = function(message) {
+dm.writeMessage = function(message) {
   var now = Date.now();
-  exports.messages.push({content: message.content, timestamp: now});
+  dm.messages.push({content: message.content, timestamp: now});
   return {content: message.content, timestamp: now};
 };
 
-exports.loadMessages = function(options) {
-  var output = exports.messages.slice(0);
+dm.loadMessages = function(options) {
+  var output = dm.messages.slice(0);
   if (options !== undefined && options.lasttimestamp !== undefined) {
     var indexWhereToCut = -1;
-    for (var j = 0; j < exports.messages.length; j++) {
-      if (exports.messages[j].timestamp > options.lasttimestamp) {
+    for (var j = 0; j < dm.messages.length; j++) {
+      if (dm.messages[j].timestamp > options.lasttimestamp) {
         indexWhereToCut = j;
         break;
       }
     }
 
-    if (indexWhereToCut !== -1) output = exports.messages.slice(indexWhereToCut);
+    if (indexWhereToCut !== -1) output = dm.messages.slice(indexWhereToCut);
     else output = [];
   }
   if (options !== undefined && options.limit !== undefined &&
-    exports.messages.length > options.limit) {
-    output = exports.messages.slice(exports.messages.length-options.limit);
+    dm.messages.length > options.limit) {
+    output = dm.messages.slice(dm.messages.length-options.limit);
   }
   return output;
 }
 
-exports.saveDB = function() {
-  // exports.messages.sort(function(a,b){
+dm.saveDB = function() {
+  // dm.messages.sort(function(a,b){
   //   return a.timestamp - b.timestamp;
   // });
   fs.writeFile(database, '', function(){
-    for (var i = 0; i < exports.messages.length; i++) {
+    for (var i = 0; i < dm.messages.length; i++) {
       fs.appendFile(database,'\n'+
-        JSON.stringify(exports.messages[i])
+        JSON.stringify(dm.messages[i])
       );
     }
   });
 }
+
+dm.initDBMessages();
+setInterval(function () {
+  dm.saveDB();
+}, 5000);
+
+module.exports = dm;

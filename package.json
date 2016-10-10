@@ -1,0 +1,15 @@
+{
+  "name": "chat-app",
+  "description": "Chat App",
+  "version": "0.1.0",
+  "contributors": [],
+  "dependencies": {
+    "body-parser": "^1.15.2"
+  },
+  "devDependencies": {},
+  "files": [],
+  "engines": {
+    "node": ">= 0.8"
+  },
+  "scripts": {}
+}
