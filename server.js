@@ -1,15 +1,29 @@
 'use strict'
 
-const http = require('http');
+//const http = require('http');
+const express = require('express');
+const fs = require('fs');
+const bodyParser = require("body-parser");
 
 const dm = require('./datamanager.js');
 const router = require('./router.js');
+
+var app = express();
 
 dm.initDBMessages();
 setInterval(function () {
   dm.saveDB();
 }, 5000);
 
-const server = http.createServer(router);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(router.rout);
+app.use(express.static('static'));
+app.use(function(req, res) {
+  let file = 'static/404.html';
+  fs.readFile(file, function (err, data) {
+    res.end(data);
+  });
+});
 
-server.listen(8080);
+app.listen(8080);

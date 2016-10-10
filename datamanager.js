@@ -12,6 +12,9 @@ exports.initDBMessages = function() {
   for (var i=0; i<arrMessages.length; i++) {
     if (arrMessages[i] !== '') exports.messages.push(JSON.parse(arrMessages[i]));
   }
+  // exports.messages.sort(function(a,b){
+  //   return a.timestamp - b.timestamp;
+  // });
 }
 
 exports.writeMessage = function(message) {
@@ -42,6 +45,9 @@ exports.loadMessages = function(options) {
 }
 
 exports.saveDB = function() {
+  // exports.messages.sort(function(a,b){
+  //   return a.timestamp - b.timestamp;
+  // });
   fs.writeFile(database, '', function(){
     for (var i = 0; i < exports.messages.length; i++) {
       fs.appendFile(database,'\n'+

@@ -46,6 +46,12 @@ $(function () {
     $('input').val('');
   });
 
+  $("#textInput").keyup(function(event){
+    if(event.keyCode == 13){
+        $('button').click();
+    }
+});
+
   setInterval(function () {
     getLatestMessages({timestamp: lastMsgTime});
   }, 5000);
