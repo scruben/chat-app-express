@@ -19,11 +19,4 @@ router.get('/messages', function(req, res) {
   res.end(JSON.stringify(dm.loadMessages(req.query)));
 });
 
-router.get(['/','/index.html'], function(req, res) {
-  let file = 'static/index.html';
-  fs.readFile(file, function (err, data) {
-    res.end(data);
-  });
-});
-
 module.exports = router;

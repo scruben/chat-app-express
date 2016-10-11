@@ -51,8 +51,8 @@ dm.saveDB = function() {
   // });
   fs.writeFile(database, '', function(){
     for (var i = 0; i < dm.messages.length; i++) {
-      fs.appendFile(database,'\n'+
-        JSON.stringify(dm.messages[i])
+      fs.appendFile(database,
+        JSON.stringify(dm.messages[i])+'\n'
       );
     }
   });

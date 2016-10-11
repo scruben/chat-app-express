@@ -1,6 +1,7 @@
 {
   "name": "chat-app",
   "description": "Chat App",
+  "main": "server.js",
   "version": "0.1.0",
   "contributors": [],
   "dependencies": {
